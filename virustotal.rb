@@ -2,11 +2,12 @@
 
 #Jacob Hammack
 #jacob.hammack@hammackj.com
-#http://hammackj.com
+#http://www.hammackj.com
 
 #01-31-2010: JPH - Updated a output bug on the usage statement. Thanks to smithj for finding it.
 #06-10-2010: JPH - Added debug output
 #06-10-2010: JPH - Added a check for the invalid hash error that seems to happen on some MD5 hashes
+#06-10-2010: JPH - Added a timer between hash lookups from files
 
 require 'optparse'
 require "net/http"
@@ -14,7 +15,7 @@ require "uri"
 
 $options = {}
 $options["xml"] = false
-$version = "1.2"
+$version = "1.3"
 
 files = Array.new
 hashes = Array.new
