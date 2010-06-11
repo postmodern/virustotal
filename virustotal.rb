@@ -5,6 +5,8 @@
 #http://hammackj.com
 
 #01-31-2010: JPH - Updated a output bug on the usage statement. Thanks to smithj for finding it.
+#06-10-2010: JPH - Added debug output
+#06-10-2010: JPH - Added a check for the invalid hash error that seems to happen on some MD5 hashes
 
 require 'optparse'
 require "net/http"
@@ -12,7 +14,7 @@ require "uri"
 
 $options = {}
 $options["xml"] = false
-$version = "1.1"
+$version = "1.2"
 
 files = Array.new
 hashes = Array.new
@@ -39,6 +41,7 @@ def fetch_results_from_file(file)
   
   inputHashes.each { |line|
       line.chomp!
+      puts "[*] Looking up hash #{line}" unless $options["debug"] != true
       result = fetch_results_from_hash(line)
       display_output(result)
     }
@@ -50,9 +53,12 @@ def fetch_results_from_hash(hash)
 	hash = hash.chomp
 	
 	begin
+		puts "[*] Attempting to query hash #{hash}"  unless $options["debug"] != true
 		wres = Net::HTTP.post_form(URI.parse('http://www.virustotal.com/vt/en/consultamd5'), {'hash' => hash})
 		
-		if wres.body=~ /notfound/
+		puts "[*] #{wres.body}" unless $options["debug"] != true
+		
+		if wres.body =~ /notfound/
 			fres = Hash.new
 			fres['hash'] = hash
 			fres['scanner'] = '-'
@@ -61,6 +67,24 @@ def fetch_results_from_hash(hash)
 			fres['result'] = "Not Found"
 			
 			results.push fres
+		elsif wres.body =~ /invalid/
+			fres = Hash.new
+			fres['hash'] = hash
+			fres['scanner'] = '-'
+			fres['version'] = '-'
+			fres['date'] = '-'
+			fres['result'] = "Invalid Hash"
+			
+			results.push fres
+		elsif wres.body =~ /No results found for that hash./
+			fres = Hash.new
+			fres['hash'] = hash
+			fres['scanner'] = '-'
+			fres['version'] = '-'
+			fres['date'] = '-'
+			fres['result'] = "No results"
+			
+			results.push fres			
 		else
 			if wres.body=~ /(analisis\/[A-Fa-f0-9]*-[A-Fa-f0-9]*)/
 				uri = "http://www.virustotal.com/" + $1;		
@@ -109,7 +133,7 @@ end
 
 # Setup the option parsing for command line arguments
 opt = OptionParser.new { |opt|
-  opt.banner =  "virustotal.rb v1.1\nJacob Hammack\nhttp://www.hammackj.com\n\n"
+  opt.banner =  "virustotal.rb v#{$version}\nJacob Hammack\nhttp://www.hammackj.com\n\n"
   opt.banner << "[*] Usage: #{$0} [mode] <options> [targets]"
   opt.separator('')
   opt.separator('Modes:')
@@ -120,6 +144,7 @@ opt = OptionParser.new { |opt|
 
   opt.on('-f FILE', '--search-file FILE', 'Searches a file of hashes on virus total') { |file| 
     if File.exist?(file)
+    	puts "[+] Adding hash #{file}" unless $options["debug"] != true
       files.push(file)
     else
       printf "[!] %s does not exist, please check your input!\n", file
@@ -129,6 +154,10 @@ opt = OptionParser.new { |opt|
   opt.on('-s HASH', '--search-hash HASH', 'Searches a single hash on virus total') { |hash| 
     hashes.push(hash)
   } 
+
+	opt.on('-d', '--debug', 'Print verbose debug information') {
+		$options["debug"] = true
+	}
   
   opt.on_tail("-h", "--help", "Show this message") { |help|
     puts opt.to_s + "\n"
