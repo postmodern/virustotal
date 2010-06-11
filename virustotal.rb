@@ -43,6 +43,7 @@ def fetch_results_from_file(file)
       line.chomp!
       puts "[*] Looking up hash #{line}" unless $options["debug"] != true
       result = fetch_results_from_hash(line)
+      sleep 5 #So we do not DOS virustotal.com we wait 5 seconds between each query
       display_output(result)
     }
 end
@@ -64,7 +65,7 @@ def fetch_results_from_hash(hash)
 			fres['scanner'] = '-'
 			fres['version'] = '-'
 			fres['date'] = '-'
-			fres['result'] = "Not Found"
+			fres['result'] = "Hash Not Found"
 			
 			results.push fres
 		elsif wres.body =~ /invalid/
@@ -75,16 +76,7 @@ def fetch_results_from_hash(hash)
 			fres['date'] = '-'
 			fres['result'] = "Invalid Hash"
 			
-			results.push fres
-		elsif wres.body =~ /No results found for that hash./
-			fres = Hash.new
-			fres['hash'] = hash
-			fres['scanner'] = '-'
-			fres['version'] = '-'
-			fres['date'] = '-'
-			fres['result'] = "No results"
-			
-			results.push fres			
+			results.push fres		
 		else
 			if wres.body=~ /(analisis\/[A-Fa-f0-9]*-[A-Fa-f0-9]*)/
 				uri = "http://www.virustotal.com/" + $1;		
@@ -114,7 +106,7 @@ def fetch_results_from_hash(hash)
     			fres['scanner'] = '-'
     			fres['version'] = '-'
     			fres['date'] = '-'
-    			fres['result'] = "Not Found"
+    			fres['result'] = "No AV Results"
     			
     			results.push fres				  
 			  end
