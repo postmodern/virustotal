@@ -10,6 +10,8 @@ Requirements
 ---
 
 * ruby
+* rubygems
+* choice
 
 Usage
 ---

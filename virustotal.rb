@@ -21,6 +21,7 @@ files = Array.new
 hashes = Array.new
 
 # Displays the results of the virustotal query
+#
 def display_output (results)
     results.each { |res|
       if $options["xml"] == true
@@ -37,6 +38,7 @@ def display_output (results)
 end
 
 # Fetches results from virustotal using a input file
+#
 def fetch_results_from_file(file)
   inputHashes = File.open(file, 'r')
   
@@ -50,6 +52,7 @@ def fetch_results_from_file(file)
 end
 
 # Fetch results from virustotal using a specific hash
+#
 def fetch_results_from_hash(hash)
 	results = Array.new
 	hash = hash.chomp
