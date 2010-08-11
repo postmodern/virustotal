@@ -1,7 +1,7 @@
 ruby-virustotal
 ===
 
-ruby-virustotal is [virustotal](http://www.virustotal.org) hash and file submiter, to automate the process
+ruby-virustotal is [virustotal](http://www.virustotal.org) hash and file submitter, to automate the process
 
 The current version is 1.4.
 
