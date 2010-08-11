@@ -3,7 +3,7 @@ ruby-virustotal
 
 ruby-virustotal is [virustotal](http://www.virustotal.org) hash and file submitter, to automate the process
 
-The current version is 1.4.
+The current version is 1.4b.
 
 Requirements
 ---
@@ -12,6 +12,7 @@ Requirements
 * rubygems
 * choice
 * json
+* rest-client
 
 * public api key from virustotal.com
 
@@ -28,7 +29,12 @@ Usage
  
 ### Searching a file of hashes and outputing to XML
 	% ./virustotal.rb -f <filewithhashesoneperline> -x
- 
+
+### Upload a file to Virustotal and wait for analysis
+	% ./virustotal.rb -u </path/to/file>
+
+### Search for a single url 
+	% ./virustotal.rb -w "http://www.google.com"
 
 Contact
 ---
