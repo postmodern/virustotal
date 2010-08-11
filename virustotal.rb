@@ -8,14 +8,21 @@
 #06-10-2010: JPH - Added debug output
 #06-10-2010: JPH - Added a check for the invalid hash error that seems to happen on some MD5 hashes
 #06-10-2010: JPH - Added a timer between hash lookups from files
+#08-10-2010: JPH - Modified to use the new virustotal api, the code has been simplified.
 
+require 'rubygems'
+require 'json'
 require 'optparse'
 require "net/http"
+require "net/https"
 require "uri"
+
 
 $options = {}
 $options["xml"] = false
-$version = "1.3"
+$version = "1.4"
+
+$api_key = "<INSERT KEY HERE>"
 
 files = Array.new
 hashes = Array.new
@@ -59,11 +66,22 @@ def fetch_results_from_hash(hash)
 	
 	begin
 		puts "[*] Attempting to query hash #{hash}"  unless $options["debug"] != true
-		wres = Net::HTTP.post_form(URI.parse('http://www.virustotal.com/vt/en/consultamd5'), {'hash' => hash})
 		
-		puts "[*] #{wres.body}" unless $options["debug"] != true
+		uri = URI.parse('https://www.virustotal.com/api/get_file_report.json')
+		params = {:resource => hash, :key => $api_key }
+
+		http = Net::HTTP.new(uri.host, uri.port)
+		http.use_ssl = true
+		http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+		request = Net::HTTP::Post.new(uri.path)
+		request.set_form_data(params)
 		
-		if wres.body =~ /notfound/
+		req = Net::HTTP::Post.new(uri.path + '?' + request.body)
+		response = http.request(req)		
+		result = JSON.parse(response.read_body)
+		
+		if result["result"] == 0
 			fres = Hash.new
 			fres['hash'] = hash
 			fres['scanner'] = '-'
@@ -72,58 +90,27 @@ def fetch_results_from_hash(hash)
 			fres['result'] = "Hash Not Found"
 			
 			results.push fres
-		elsif wres.body =~ /invalid/
-			fres = Hash.new
-			fres['hash'] = hash
-			fres['scanner'] = '-'
-			fres['version'] = '-'
-			fres['date'] = '-'
-			fres['result'] = "Invalid Hash"
-			
-			results.push fres		
-		else
-			if wres.body=~ /(analisis\/[A-Fa-f0-9]*-[A-Fa-f0-9]*)/
-				uri = "http://www.virustotal.com/" + $1;		
-				hres = Net::HTTP.get_response(URI.parse(uri))
-
-				if hres.kind_of?(Net::HTTPRedirection)
-					new_url = hres['Location']
-					hres = Net::HTTP.get_response(URI.parse(new_url))
-				end 
-								
-				hres.body.scan(/<tr.*>\n<td>(.*)<\/td>\n<td>(.*)<\/td>\n<td>(.*)<\/td>\n<td.*>(.*)<\/td>\n<\/tr>\n/) { |scanner, version, date, result| 
+		else		
+			result["report"][1].each do |scanner, res|
+				if res != ''
 					fres = Hash.new
-					if result != '-'
-						fres['hash'] = hash
-						fres['scanner'] = scanner
-						fres['version'] = version
-						fres['date'] = date
-						fres['result'] = result
-											
-						results.push fres
-					end
-				}
-				
-				if results.length == 0
-    			fres = Hash.new
-    			fres['hash'] = hash
-    			fres['scanner'] = '-'
-    			fres['version'] = '-'
-    			fres['date'] = '-'
-    			fres['result'] = "No AV Results"
-    			
-    			results.push fres				  
-			  end
-			  
-			end			
-		end	
-	rescue Net::HTTP::Error => e	
+					fres['hash'] = hash
+					fres['scanner'] = scanner
+					fres['version'] = '-'
+					fres['date'] = '-'
+					fres['result'] = res
+					
+					results.push fres
+				end
+			end
+		end
+	rescue Exception => e		
 		puts e.message
 		STDERR.puts "[!] An error has occured. Retrying %s\n", hash
 		sleep 5 #So we do not DOS virustotal.com we wait 5 seconds between each query
 		retry
 	end
-
+	
 	return results
 end
 
@@ -158,11 +145,16 @@ opt = OptionParser.new { |opt|
   opt.on_tail("-h", "--help", "Show this message") { |help|
     puts opt.to_s + "\n"
     exit
-  }
-    
+  } 
 }
 
-begin  
+begin
+	if $api_key == "<INSERT KEY HERE>"
+		puts "[!] You must obtain a api key from virustotal.com"
+		
+		exit
+	end
+	
   if ARGV.length != 0 
     opt.parse!
   else
