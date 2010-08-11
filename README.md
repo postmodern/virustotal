@@ -16,6 +16,15 @@ Requirements
 
 * public api key from virustotal.com
 
+Installation
+---
+
+	% sudo gem install json rest-client choice
+	% git clone git://github.com/hammackj/ruby-virustotal.git
+	% cd ruby-virustotal
+	% Edit the virustotal.rb script and insert your public api key from virustotal.com
+	% ./virustotal [options]
+
 Usage
 ---
 
