@@ -11,20 +11,18 @@
 #08-10-2010: JPH - Modified to use the new virustotal api, the code has been simplified.
 #08-11-2010: JPH - Added file upload option -u, so that files can be uploaded and waits for results
 #08-11-2010: JPH - Added a url scan option -w, so that urls can be scanned using the new api
+#08-27-2010: JPH - Cleaned up some dead code
+#								 - Added URL for the report for easier web viewing.
 
 require 'rubygems'
-require 'json' 					#sudo gem install json
 require 'optparse'
-#require "net/http"
-#require "net/https"
-#require "uri"
-
+require 'json' 					#sudo gem install json
 require "rest_client" 	#sudo gem install rest-client
 
 
 $options = {}
 $options["xml"] = false
-$version = "1.4b"
+$version = "1.5"
 $timeout = 16
 
 $api_key = "<INSERT KEY HERE>"
@@ -60,7 +58,7 @@ def fetch_results_from_file(file)
       line.chomp!
       result = fetch_results_from_hash(line)   
       display_output(result)
-			sleep $timeout #So we do not DOS virustotal.com we wait 5 seconds between each query
+			sleep $timeout #So we do not DOS virustotal.com we wait for the timeout seconds between each query
     }
 end
 
@@ -106,7 +104,7 @@ def rest_fetch_results_from_hash(hash)
 		end
 	rescue Exception => e		
 		puts e.message
-		STDERR.puts "[!] An error has occured. Retrying #{hash}\n"
+		STDERR.puts "[!] An error has occured. Retrying #{hash} in #{$timeout} seconds.\n"
 		sleep $timeout #So we do not DOS virustotal.com we wait 5 seconds between each query
 		retry
 	end
@@ -137,6 +135,9 @@ def rest_fetch_results_from_url(url)
 		
 		response = RestClient.post 'https://www.virustotal.com/api/get_url_report.json', { :resource => url, :key => $api_key }
 		result = JSON.parse(response)
+		
+		
+
 
 		if result["result"] == 0
 			fres = Hash.new
