@@ -3,7 +3,7 @@ ruby-virustotal
 
 ruby-virustotal is [virustotal](http://www.virustotal.com) automation and convenience tool for hash, file and URL submission.
 
-The current version is 1.4b.
+The current version is 1.5.
 
 Requirements
 ---
