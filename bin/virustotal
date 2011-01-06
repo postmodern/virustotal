@@ -1,0 +1,142 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+# virustotal - a command line tool for working with virustotal.com
+# Jacob Hammack <jacob.hammack@hammackj.com>
+# http://www.hammackj.com
+# 
+# hammackj - 01-05-2011 - Version 2.0.0
+#
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '/../lib'))
+
+require 'rubygems'
+
+require 'choice'
+require 'json'
+require 'rest_client'
+
+require 'virustotal'
+
+module VirusTotal
+		
+	#
+	#
+	#
+	class Application
+		
+		# Creates a Application instance
+		#
+		def initialize
+		end
+		
+		#
+		#
+		#
+		def main
+			Choice.options do
+				banner "#{APP_NAME} - v#{VERSION}" 
+				header 'Jacob Hammack'
+				header 'http://hammackj.com'
+				header "Usage: #{APP_NAME} [OPTIONS]"
+				header ''
+
+				separator 'Search Options'
+				
+				option :hash do
+					short '-h'
+					long '--search-hash HASH'
+					desc 'Searches a single hash on virustotal.com'
+				end
+				
+				option :site do
+					short '-s'
+					long '--search-site SITE'
+					desc 'Searches for a single url on virustotal.com'
+				end
+
+				option :file do
+					short '-f'
+					long '--search-file FILE'
+					desc 'Searches a file of hashes on virustotal.com'
+				end				
+
+				separator ''
+				separator 'Output Options'
+				
+				option :xml do
+					short '-x'
+					long '--xml-output'
+					desc 'Print results as xml to stdout'
+				end
+				
+				option :yaml do
+					short '-y'
+					long '--yaml-output'
+					desc 'Print results as yaml to stdout'
+				end
+				
+				separator ''
+				separator 'Advanced Options'
+
+				option :create_config do
+          long '--create-config'
+          desc 'Creates a skeleton config file to use'
+					action do						
+						if File.exists?(File.expand_path(CONFIG_FILE)) == false
+							File.open(File.expand_path(CONFIG_FILE), 'w+') do |f| 
+								f.write("virustotal: \n\tapi-key: \n\ttimeout: \n\n") 
+							end
+
+							puts "[*] An empty #{CONFIG_FILE} has been created. Please edit and fill in the correct values."
+							exit
+						else
+							puts "[!]  #{CONFIG_FILE} already exists. Please delete it if you wish to re-create it."
+							exit
+						end
+					end
+        end
+			
+				option :upload do
+					short '-u'
+					long '--upload-file FILE'
+					desc 'Uploads a file to virustotal.com and waits for the results'
+				end
+							
+				option :debug do
+					short '-d'
+					long '--debug'
+					desc 'Print verbose debug information'
+				end
+					
+				separator ''
+				separator 'Other Options'
+
+				option :help do
+					long '--help'
+					desc 'Show this message'
+				end
+
+				option :version do
+					short '-v'
+					long '--version'
+					desc 'Show version'
+					action do
+						puts "#{APP_NAME} - v#{VERSION}"
+						exit
+					end
+				end
+	
+					footer ''
+				end
+
+				if ARGV.length == 0
+					puts Choice.help
+				end			
+			
+		end
+	end
+end
+
+app = VirusTotal::Application.new
+app.main
