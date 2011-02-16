@@ -29,8 +29,7 @@ Gem::Specification.new do |s|
 	s.has_rdoc 							= 'yard'
 	s.extra_rdoc_files 			= ["README.md", "LICENSE", "NEWS.md", "TODO.md"]
 	
-	s.add_dependency('choice', '>= 0.1.4')
-	s.add_dependency('json', '>= 1.4.6')
-	s.add_dependency('restclient', '>= 1.6.1')
+	s.add_dependency('json', '>= 1.5.1')
+	s.add_dependency('rest-client', '>= 1.6.1')
 	
 end
