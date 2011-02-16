@@ -6,5 +6,10 @@ module VirusTotal
 	CONFIG_FILE = "~/.virustotal"
 end
 
+require 'json'
+require 'rest_client'
+require 'optparse'
+
+require 'virustotal/application'
 require 'virustotal/virustotal'
 require 'virustotal/virustotalresult'
