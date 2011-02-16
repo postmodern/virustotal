@@ -1,12 +1,12 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "projmgr"
+require "virustotal"
  
 task :build do
   system "gem build projmgr.gemspec"
 end
  
 task :release => :build do
-  system "gem push projmgr-#{ProjMgr::VERSION}.gem"
+  system "gem push projmgr-#{VirusTotal::VERSION}.gem"
 end
 
 task :clean do
