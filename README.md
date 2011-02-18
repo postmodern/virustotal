@@ -1,29 +1,24 @@
-ruby-virustotal
-===
+# ruby-virustotal
 
 ruby-virustotal is [virustotal](http://www.virustotal.com) automation and convenience tool for hash, file and URL submission.
 
 The current version is 1.5.
 
-Requirements
----
+## Requirements
 
 * ruby
 * rubygems
-* choice
 * json
 * rest-client
 
-* public api key from virustotal.com
+* public api key from [virustotal.com](http://www.virustotal.com)
 
-Installation
----
+## Installation
 
-	% sudo gem install virustotal
+	% gem install virustotal
 	% virustotal [options]
 
-Usage
----
+## Usage
 
 ### Searching a file of hashes
 
@@ -42,7 +37,6 @@ Usage
 ### Search for a single URL 
 	% ./virustotal.rb -w "http://www.google.com"
 
-Contact
----
+## Contact
 
 You can reach me at Jacob[dot]Hammack[at]hammackj[dot]com or http://www.hammackj.com
