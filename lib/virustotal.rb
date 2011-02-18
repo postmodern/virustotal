@@ -9,6 +9,7 @@ end
 require 'json'
 require 'rest_client'
 require 'optparse'
+require 'yaml'
 
 require 'virustotal/application'
 require 'virustotal/virustotal'
