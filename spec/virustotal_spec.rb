@@ -8,7 +8,7 @@ module VirusTotal
       data = cmd.readlines
       cmd.close
       data.length.should == 39
- 			sleep 6
+ 			sleep 7
     end
   end
   
@@ -18,7 +18,7 @@ module VirusTotal
       data = cmd.readlines
       cmd.close      
       data.length.should == 6
-			sleep 6
+			sleep 7
     end
   end
 end
