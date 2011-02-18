@@ -6,9 +6,10 @@ module VirusTotal
 		# Creates a new instance of the [VirusTotal] class
 		#
 		# @return [VirusTotal] 
-		def initialize api_key, timeout
+		def initialize(api_key, timeout = 7, debug = false)
 			@api_key = api_key
 			@timeout = timeout
+			@debug = debug
 		end
 		
 		#
