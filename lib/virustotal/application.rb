@@ -57,7 +57,7 @@ module VirusTotal
 					opt.on('-c', '--create-config', 'Creates a skeleton config file to use') do					
 						if File.exists?(File.expand_path(CONFIG_FILE)) == false
 							File.open(File.expand_path(CONFIG_FILE), 'w+') do |f| 
-								f.write("virustotal: \n\tapi-key: \n\ttimeout: \n\n") 
+								f.write("virustotal: \n\tapi-key: \n\ttimeout: 10\n\n") 
 							end
 
 							puts "[*] An empty #{File.expand_path(CONFIG_FILE)} has been created. Please edit and fill in the correct values."
@@ -101,8 +101,26 @@ module VirusTotal
 		#
 		#
 		#
+		def load_config
+			if File.exists?(File.expand_path(CONFIG_FILE))
+				config = YAML.load_file File.expand_path(CONFIG_FILE)
+				
+				puts config.class
+			else
+				puts "[!] #{CONFIG_FILE} does not exist. Please run virustotal --create-config, to create it."
+				exit
+			end
+			
+			config
+		end
+		
+		#
+		#
+		#
 		def run(args)
 			parse_options(args)
+			
+			load_config
 			
 			if @hashes != nil
 				@hashes.each do |hash|
