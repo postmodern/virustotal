@@ -4,6 +4,8 @@
 - Converted the entire thing into a rubygem
 - Cleaned up the code significantly
 - Added a config file to store the api-key in
+- fixed up the command line options some
+- Optimized execution some
 
 # 1.0.0 (September 27, 2010)
 - Cleaned up some dead code
