@@ -1,9 +1,9 @@
+# encoding: utf-8
 
 module VirusTotal
 	class Application
 		
-		#
-		#
+		# Creates a new instance of the [Application] class
 		#
 		def initialize
 			@options = {}
@@ -14,9 +14,9 @@ module VirusTotal
 			@uploads = Array.new
 		end
 		
+		# Parses the command the line options and returns the parsed options hash
 		#
-		#
-		#
+		# @return [Hash] of the parsed options
 		def parse_options(args)
 			begin
 				@options['output'] = :stdout
@@ -116,8 +116,7 @@ module VirusTotal
 			end
 		end
 		
-		#
-		#
+		# Loads the .virustotal config file for the api key
 		#
 		def load_config
 			if File.exists?(File.expand_path(CONFIG_FILE))
@@ -128,7 +127,7 @@ module VirusTotal
 			end
 		end
 		
-		# 
+		# Processes all of the command line arguments and displays the results
 		#
 		def run(args)
 			parse_options(args)		

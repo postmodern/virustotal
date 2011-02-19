@@ -31,7 +31,7 @@ module VirusTotal
 				puts e.message
 				puts e.backtrace.join("\n")
 				STDERR.puts "[!] An error has occured. Retrying #{hash} in #{@timeout} seconds.\n"
-				sleep @timeout #So we do not DOS virustotal.com we wait 5 seconds between each query
+				sleep @timeout #So we do not DOS virustotal.com we wait at least 5 seconds between each query
 				retry
 			end
 		end
@@ -51,7 +51,7 @@ module VirusTotal
 				puts e.message
 				puts e.backtrace.join("\n")
 				STDERR.puts "[!] An error has occured. Retrying #{url} in #{@timeout} seconds\n"
-				sleep @timeout #So we do not DOS virustotal.com we wait 5 seconds between each query
+				sleep @timeout #So we do not DOS virustotal.com we wait at least 5 seconds between each query
 				retry
 			end
 		end		
@@ -73,13 +73,7 @@ module VirusTotal
 				if result['result']	== 1
 					results = query_hash result['scan_id']
 					
-					puts "here"
-					
-					puts results.inspect
-					
-					puts "hererz"
-					
-					while results[0]['result'] == "Hash Not Found"
+					while results.results[0]['result'] == "Hash Not Found"
 						puts "[*] File has not been analyized yet, waiting 60 seconds to try again" if @debug
 						sleep 60				
 						results = query_hash result['scan_id']
@@ -100,7 +94,7 @@ module VirusTotal
 				puts e.message
 				puts e.backtrace.join("\n")
 				STDERR.puts "[!] An error has occured. Retrying #{file} in #{@timeout} seconds\n"
-				sleep @timeout #So we do not DOS virustotal.com we wait 5 seconds between each query
+				sleep @timeout #So we do not DOS virustotal.com we wait at least 5 seconds between each query
 				retry
 			end
 

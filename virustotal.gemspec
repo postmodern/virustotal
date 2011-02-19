@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
 	s.add_development_dependency "rspec"
 	
 	s.has_rdoc 							= 'yard'
-	s.extra_rdoc_files 			= ["README.md", "LICENSE", "NEWS.md", "TODO.md"]
+	s.extra_rdoc_files 			= ["README.markdown", "LICENSE", "NEWS.markdown", "TODO.markdown"]
 	
 	s.add_dependency('json', '>= 1.5.1')
 	s.add_dependency('rest-client', '>= 1.6.1')

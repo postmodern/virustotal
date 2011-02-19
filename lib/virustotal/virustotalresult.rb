@@ -8,7 +8,7 @@ module VirusTotal
 	class VirusTotalResult		
 		attr_accessor :results
 		
-		# Creates a 
+		# Creates a new instance of the [VirusTotalResult] class
 		#
 		def initialize hash, type, result
 			@type = type
@@ -58,9 +58,9 @@ module VirusTotal
 				fres['date'] = '-'
 				fres['permalink'] = '-'
 				if @type == :hash
-					fres['result'] = "Hash Not Found"
+					fres['result'] = "No Results for Hash"
 				elsif @type == :site
-					fres['result'] = "Site Not Found"
+					fres['result'] = "No Results for Site"
 				end
 				@results.push fres				
 			end			
