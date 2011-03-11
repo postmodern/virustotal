@@ -22,20 +22,20 @@ The current version is 2.0.
 
 ### Searching a file of hashes
 
-	% ./virustotal.rb -f <file_with_hashes_one_per_line>
+	% virustotal -f <file_with_hashes_one_per_line>
 
 ### Searching a single hash
 
-	% ./virustotal.rb -h FD287794107630FA3116800E617466A9
+	% virustotal -h FD287794107630FA3116800E617466A9
  
 ### Searching a file of hashes and outputting to XML
-	% ./virustotal.rb -f <file_with_hashes_one_per_line> -x
+	% virustotal -f <file_with_hashes_one_per_line> -x
 
 ### Upload a file to Virustotal and wait for analysis
-	% ./virustotal.rb -u </path/to/file>
+	% virustotal -u </path/to/file>
 
 ### Search for a single URL 
-	% ./virustotal.rb -s "http://www.google.com"
+	% virustotal -s "http://www.google.com"
 
 ## Contact
 
