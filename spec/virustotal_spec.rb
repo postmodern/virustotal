@@ -7,7 +7,7 @@ module VirusTotal
       cmd = IO.popen "./bin/virustotal -h FD287794107630FA3116800E617466A9"
       data = cmd.readlines
       cmd.close
-      data.length.should == 39
+      data.length.should == 38
  			sleep 7
     end
   end
@@ -17,7 +17,7 @@ module VirusTotal
       cmd = IO.popen "./bin/virustotal -s \"http://www.google.com\""
       data = cmd.readlines
       cmd.close      
-      data.length.should == 6
+      data.length.should == 13
 			sleep 7
     end
   end
