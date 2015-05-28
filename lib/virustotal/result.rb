@@ -5,10 +5,10 @@ module VirusTotal
 	# A Wrapper class for the results from a virustotal.com
 	# 
 	# @author Jacob Hammack <jacob.hammack@hammackj.com>
-	class VirusTotalResult		
+	class Result		
 		attr_accessor :results
 		
-		# Creates a new instance of the [VirusTotalResult] class
+		# Creates a new instance of the [Result] class
 		#
 		def initialize hash, type, result
 			@type = type
@@ -66,7 +66,7 @@ module VirusTotal
 			end			
 		end
 		
-		# Prints the [VirusTotalResult] object to screen
+		# Prints the [Result] object to screen
 		#
 		def to_stdout
 			result_string = String.new
@@ -76,7 +76,7 @@ module VirusTotal
 			print result_string
 		end
 				
-		# Prints the [VirusTotalResult] object as a xml string to the screen
+		# Prints the [Result] object as a xml string to the screen
 		#
 		def to_xml
 			result_string = String.new
@@ -92,7 +92,7 @@ module VirusTotal
 			print result_string			
 		end
 		
-		# Prints the [VirusTotalResult] object as a yaml string to the screen
+		# Prints the [Result] object as a yaml string to the screen
 		#
 		def to_yaml
 			result_string = String.new

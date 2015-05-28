@@ -13,4 +13,4 @@ require 'yaml'
 
 require 'virustotal/application'
 require 'virustotal/virustotal'
-require 'virustotal/virustotalresult'
+require 'virustotal/result'

@@ -14,7 +14,7 @@ module VirusTotal
 		
 		# Queries a single hash on virustotal.com
 		#
-		# @return [VirusTotalResult] of the results from the query
+		# @return [Result] of the results from the query
 		def query_hash hash
 			begin
 				puts "[*] Querying hash #{hash}" if @debug
@@ -24,7 +24,7 @@ module VirusTotal
 					end
 
 				response = RestClient.post 'https://www.virustotal.com/api/get_file_report.json', { :resource => hash, :key => @api_key }
-				results = VirusTotalResult.new hash, :hash, JSON.parse(response)
+				results = Result.new hash, :hash, JSON.parse(response)
 				
 				return results
 			rescue Exception => e		
@@ -38,13 +38,13 @@ module VirusTotal
 		
 		# Queries a single url on virustotal.com
 		#
-		# @return [VirusTotalResult] of the results from the query
+		# @return [Result] of the results from the query
 		def query_site url
 			begin
 				puts "[*] Querying url #{url}" if @debug
 
 				response = RestClient.post 'https://www.virustotal.com/api/get_url_report.json', { :resource => url, :key => @api_key }
-				results = VirusTotalResult.new url, :site, JSON.parse(response)
+				results = Result.new url, :site, JSON.parse(response)
 				
 				return results
 			rescue Exception => e		
