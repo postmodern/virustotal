@@ -12,5 +12,8 @@ require 'optparse'
 require 'yaml'
 
 require 'virustotal/application'
-require 'virustotal/virustotal'
+require 'virustotal/client'
 require 'virustotal/result'
+
+# XXX: deprecated
+require 'virustotal/virustotal'
