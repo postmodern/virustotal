@@ -13,7 +13,7 @@ describe "./bin/virustotal" do
   context "with -h FD287794107630FA3116800E617466A9" do
     it "returns 47 results for FD287794107630FA3116800E617466A9" do
       run "-h FD287794107630FA3116800E617466A9" do |data|
-        data.length.should == 47
+        expect(data.length).to eq(47)
       end
     end
   end
@@ -21,7 +21,7 @@ describe "./bin/virustotal" do
   context "with -s 'http://www.google.com'" do
     it "returns 63 sites for 'http://www.google.com'" do
       run "-s http://www.google.com" do |data|
-        data.length.should == 63
+        expect(data.length).to eq(63)
       end
     end
   end
