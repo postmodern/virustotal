@@ -1,4 +1,8 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+begin
+  require 'bundler/setup'
+rescue LoadError => error
+  abort error.message
+end
 
 require "virustotal"
  
