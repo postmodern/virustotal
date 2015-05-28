@@ -133,7 +133,7 @@ module VirusTotal
 			parse_options(args)		
 			load_config
 			
-			vt = VirusTotal.new(@config["virustotal"]["api-key"], @config["virustotal"]["timeout"], @options["debug"])
+			vt = Client.new(@config["virustotal"]["api-key"], @config["virustotal"]["timeout"], @options["debug"])
 			
 			if @options['output'] == :stdout
 				output_method = :to_stdout
